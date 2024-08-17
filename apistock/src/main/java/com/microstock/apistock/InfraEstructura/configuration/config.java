@@ -9,12 +9,10 @@ import com.microstock.apistock.Dominio.servicios.ServicioCategoriaPost;
 import com.microstock.apistock.InfraEstructura.Interfaces.ICategoriaRepository;
 
 @Configuration
-public class config {
-    
+public class config {  
     @Bean
     public ServicioCategoriaPost getServicioCategoriaPost(ICategoriaRepository categoriaRepository){
-        return new ServicioCategoriaPost(categoriaRepository);
-            
+        return new ServicioCategoriaPost(categoriaRepository);         
     }
 
     @Bean
