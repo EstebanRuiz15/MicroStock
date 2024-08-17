@@ -21,7 +21,7 @@ public class ControllerCategoria {
     
     private final ServicioPostCategoria servipost;
     
-
+    // comentario de prueba
     public ControllerCategoria(ServicioPostCategoria servipost) {
         this.servipost = servipost;
     }
