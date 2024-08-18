@@ -1,9 +1,9 @@
-package com.microstock.apistock.Aplicacion.mapper;
+package com.microstock.apistock.aplicacion.mappers;
 
 import org.mapstruct.Mapper;
 
-import com.microstock.apistock.Aplicacion.Dto.CategoriaDto;
-import com.microstock.apistock.Dominio.Entity.Categoria;
+import com.microstock.apistock.aplicacion.dtos.CategoriaDto;
+import com.microstock.apistock.dominio.entity.Categoria;
 
 
 
