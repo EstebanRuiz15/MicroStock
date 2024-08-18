@@ -1,4 +1,4 @@
-package com.microstock.apistock.Dominio.Entity;
+package com.microstock.apistock.dominio.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,8 +26,8 @@ public class Categoria {
     public Categoria(){
 
     }
-    public Categoria(int id, String nombre,String descripcion){
-         this.id=id;
+    public Categoria( String nombre,String descripcion){
+    
          this.nombre=nombre;
          this.descripcion=descripcion;
     }

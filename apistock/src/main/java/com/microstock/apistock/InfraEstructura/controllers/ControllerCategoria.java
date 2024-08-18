@@ -1,34 +1,30 @@
-package com.microstock.apistock.InfraEstructura.controllers;
+package com.microstock.apistock.infraestructura.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.microstock.apistock.Aplicacion.Dto.CategoriaDto;
-import com.microstock.apistock.Aplicacion.mapper.MapperCategoria;
-import com.microstock.apistock.Aplicacion.servicios.ServicioPostCategoria;
+import com.microstock.apistock.aplicacion.dtos.CategoriaDto;
+import com.microstock.apistock.aplicacion.servicios.ServicioPostCategoria;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
-
+import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/Api/Stock")
 public class ControllerCategoria {
     
     private final ServicioPostCategoria servipost;
-    
-    // comentario de prueba
+
     public ControllerCategoria(ServicioPostCategoria servipost) {
         this.servipost = servipost;
     }
 
+    @Operation(summary = "Método para crear categorías", 
+    description = "Este método permite crear una nueva categoría proporcionando los datos necesarios en el cuerpo de la solicitud.")
 
     @PostMapping("/agregar")
-    private CategoriaDto crearCategoria(@RequestBody @Valid CategoriaDto categoria) {
+    public CategoriaDto crearCategoria(@RequestBody CategoriaDto categoria) {
+        
         return servipost.crearCat(categoria);
     }
 }

@@ -1,4 +1,4 @@
-package com.microstock.apistock.Aplicacion.Excepciones.ExcepcionesCategoria;
+package com.microstock.apistock.aplicacion.excepciones.excepciones_categoria;
 
 public class DetailsErrorCategoria {
     private int statusCode;

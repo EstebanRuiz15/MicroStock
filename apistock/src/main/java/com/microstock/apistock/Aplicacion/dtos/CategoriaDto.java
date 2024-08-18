@@ -1,20 +1,11 @@
-package com.microstock.apistock.Aplicacion.Dto;
-
-import org.hibernate.annotations.Comment;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-
-import jakarta.validation.constraints.Size;
-
+package com.microstock.apistock.aplicacion.dtos;
 
 public class CategoriaDto {
-    @Size(max = 50, min = 5, message = "Longitud debe estar entre 5 y 50 caracteres")
-    private String nombre;
-    private String descripcion;
-
     
+    private String nombre="";
+    private String descripcion="";
+  
     public CategoriaDto(){
-        
     }
 
     public CategoriaDto(String nombre, String descripcion) {
@@ -33,8 +24,4 @@ public class CategoriaDto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-
-
-    
 }

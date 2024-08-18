@@ -1,4 +1,4 @@
-package com.microstock.apistock.InfraEstructura.handlerErrore;
+package com.microstock.apistock.infraestructura.handlererrores;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.microstock.apistock.Aplicacion.Excepciones.ExcepcionesCategoria.DetailsErrorCategoria;
-import com.microstock.apistock.Aplicacion.Excepciones.ExcepcionesCategoria.ErroresCategoria;
+import com.microstock.apistock.aplicacion.excepciones.excepciones_categoria.DetailsErrorCategoria;
+import com.microstock.apistock.aplicacion.excepciones.excepciones_categoria.ErroresCategoria;
 
 @ControllerAdvice
 public class HandlerErrorCategoria {

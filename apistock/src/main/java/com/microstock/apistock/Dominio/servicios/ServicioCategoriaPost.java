@@ -1,7 +1,7 @@
-package com.microstock.apistock.Dominio.servicios;
+package com.microstock.apistock.dominio.servicios;
 
-import com.microstock.apistock.Dominio.Entity.Categoria;
-import com.microstock.apistock.InfraEstructura.Interfaces.ICategoriaRepository;
+import com.microstock.apistock.dominio.entity.Categoria;
+import com.microstock.apistock.infraestructura.interfaces.ICategoriaRepository;
 
 public class ServicioCategoriaPost {
 
