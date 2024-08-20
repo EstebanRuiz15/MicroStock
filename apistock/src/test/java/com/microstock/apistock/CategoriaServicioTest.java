@@ -1,6 +1,11 @@
 package com.microstock.apistock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -19,25 +24,24 @@ import com.microstock.apistock.aplicacion.servicios.ServicioPostCategoria;
 import com.microstock.apistock.dominio.entity.Categoria;
 import com.microstock.apistock.dominio.servicios.ServicioCategoriaPost;
 import com.microstock.apistock.infraestructura.interfaces.ICategoriaRepository;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class CategoriaServicioTest {
 
 	@Mock
-    private ServicioCategoriaPost servicioCategoriaPost;
+    private ServicioCategoriaPost servicioEntity;
     @Mock
     private MapperCategoria mapperCategoria;
     @Mock
-    private ICategoriaRepository iCategoriaRepository;
-    @Mock
-    private Categoria servicientity;
+    private ICategoriaRepository repository;
 
-    @InjectMocks
     private ServicioPostCategoria servicioPostCategoria;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this); // Inicializar mocks
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        servicioPostCategoria = new ServicioPostCategoria(servicioEntity, mapperCategoria, repository);
     }
 
     @Test
@@ -66,21 +70,20 @@ void testCrearCat_NombreNulo() {
 
 @Test
 void testCrearCat_NombreYaExistente() {
-    when(iCategoriaRepository.findByNombreIgnoreCase("NombreExistente"))
-            .thenReturn(Optional.of(new Categoria("NombreExistente", "descripcion valida")));
+     CategoriaDto categoriaDto = new CategoriaDto("Nombre Existente", "Descripción válida");
+     Categoria categoriaExistente = new Categoria(1, "Nombre Existente", "Descripción existente");
 
-        // Configura el objeto de entrada para el método
-        CategoriaDto categoriaDto = new CategoriaDto();
-        categoriaDto.setNombre("NombreExistente");
-        categoriaDto.setDescripcion("descripcion valida");
+        when(repository.findByNombreIgnoreCase(categoriaDto.getNombre())).thenReturn(Optional.of(categoriaExistente));
 
-        // Verifica que la excepción sea lanzada cuando se llama al método crearCat
         ErroresCategoria exception = assertThrows(ErroresCategoria.class, () -> {
             servicioPostCategoria.crearCat(categoriaDto);
         });
 
-        // Verifica el mensaje de la excepción
-        assertEquals("El nombre ya existe", exception.getMessage());
+        assert(exception.getMessage().equals("El nombre ya existe"));
+
+        verify(repository, times(1)).findByNombreIgnoreCase(categoriaDto.getNombre());
+
+        verify(servicioEntity, never()).CrearCategoria(any());
     }
 
     @Test
@@ -107,4 +110,21 @@ void testCrearCat_NombreYaExistente() {
     
         assertEquals("La descripcion debe tener al menos 1 caracter", exception.getMessage());
     }
+    @Test
+void testCrearCat_Exito() {
+    CategoriaDto categoriaDto = new CategoriaDto();
+    categoriaDto.setNombre("Categoria Nueva");
+    categoriaDto.setDescripcion("Descripcion válida");
+
+    Categoria categoria = new Categoria();
+    when(repository.findByNombreIgnoreCase("Categoria Nueva")).thenReturn(Optional.empty());
+    when(mapperCategoria.CategoriaDtoToCategoria(categoriaDto)).thenReturn(categoria);
+    when(servicioPostCategoria.crearCat(categoriaDto)).thenReturn(categoriaDto);
+    when(mapperCategoria.CategoriatoToCategoriaDto(categoria)).thenReturn(categoriaDto);
+
+    CategoriaDto resultado = servicioPostCategoria.crearCat(categoriaDto);
+
+    assertNotNull(resultado);
+    assertEquals("Categoria Nueva", resultado.getNombre());
+}
 }
