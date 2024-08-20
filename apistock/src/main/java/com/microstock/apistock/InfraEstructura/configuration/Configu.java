@@ -12,7 +12,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
-public class Config {
+public class Configu {
 
     @Bean
     public ServicioCategoriaPost getServicioCategoriaPost(ICategoriaRepository categoriaRepository){
