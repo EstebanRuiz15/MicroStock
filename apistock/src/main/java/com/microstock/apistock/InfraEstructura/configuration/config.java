@@ -13,11 +13,10 @@ import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
 public class Config {
-    
+
     @Bean
     public ServicioCategoriaPost getServicioCategoriaPost(ICategoriaRepository categoriaRepository){
-        return new ServicioCategoriaPost(categoriaRepository);
-            
+        return new ServicioCategoriaPost(categoriaRepository);         
     }
 
     @Bean
