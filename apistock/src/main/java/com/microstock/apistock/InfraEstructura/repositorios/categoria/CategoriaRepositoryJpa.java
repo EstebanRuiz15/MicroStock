@@ -1,4 +1,4 @@
-package com.microstock.apistock.infraestructura.interfaces;
+package com.microstock.apistock.infraestructura.repositorios.categoria;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface ICategoriaRepository extends JpaRepository<Categoria, Integer> {
+public interface CategoriaRepositoryJpa extends JpaRepository<Categoria, Integer> {
     Optional<Categoria> findByNombreIgnoreCase(String nombre);
 
 }

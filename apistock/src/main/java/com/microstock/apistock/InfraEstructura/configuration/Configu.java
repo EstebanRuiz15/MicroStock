@@ -2,11 +2,14 @@ package com.microstock.apistock.infraestructura.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import com.microstock.apistock.aplicacion.mappers.MapperCategoria;
-import com.microstock.apistock.aplicacion.servicios.ServicioPostCategoria;
-import com.microstock.apistock.dominio.servicios.ServicioCategoriaPost;
-import com.microstock.apistock.infraestructura.interfaces.ICategoriaRepository;
+import com.microstock.apistock.aplicacion.servicios.ServicioCategoria;
+import com.microstock.apistock.dominio.interfaces.ICategoriaRepository;
+import com.microstock.apistock.dominio.servicios.ServicioCategoriaImpl;
+import com.microstock.apistock.infraestructura.repositorios.categoria.CategoriaRepositoryImpl;
+import com.microstock.apistock.infraestructura.repositorios.categoria.CategoriaRepositoryJpa;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -15,13 +18,14 @@ import io.swagger.v3.oas.models.info.Info;
 public class Configu {
 
     @Bean
-    public ServicioCategoriaPost getServicioCategoriaPost(ICategoriaRepository categoriaRepository){
-        return new ServicioCategoriaPost(categoriaRepository);         
+    public ServicioCategoriaImpl getServicioCategoriaPost(ICategoriaRepository categoriaRepository){
+        return new ServicioCategoriaImpl(categoriaRepository);         
     }
 
     @Bean
-    public ServicioPostCategoria getServicioPostCategoria(ServicioCategoriaPost servicientity, MapperCategoria mapperCategoria, ICategoriaRepository iCategoriaRepository){
-        return new ServicioPostCategoria(servicientity,mapperCategoria, iCategoriaRepository);
+    @Primary
+    public ServicioCategoria getServicioPostCategoria(ServicioCategoriaImpl servicientity, MapperCategoria mapperCategoria){
+        return new ServicioCategoria(servicientity,mapperCategoria);
     }
 
     @Bean
@@ -32,4 +36,6 @@ public class Configu {
                         .version("1.0.0")
                         .description("Permitira obtener todo lo necesario para acceder al stock del Ecommerce"));
     }
+
+   
 }

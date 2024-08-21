@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.microstock.apistock.aplicacion.excepciones.excepciones_categoria.DetailsErrorCategoria;
-import com.microstock.apistock.aplicacion.excepciones.excepciones_categoria.ErroresCategoria;
+import com.microstock.apistock.dominio.excepciones.excepciones_categoria.DetailsErrorCategoria;
+import com.microstock.apistock.dominio.excepciones.excepciones_categoria.ErroresCategoria;
 
 @ControllerAdvice
 public class HandlerErrorCategoria {
