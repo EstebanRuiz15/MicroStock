@@ -45,7 +45,7 @@ public class ServicioCategoriaImpl implements ICategoriaService{
 
     @Override
     public List<Categoria> getAllCategoria(Integer page, Integer size) {
-        // TODO Auto-generated method stub
+     
         throw new UnsupportedOperationException("Unimplemented method 'getAllCategoria'");
     }
 

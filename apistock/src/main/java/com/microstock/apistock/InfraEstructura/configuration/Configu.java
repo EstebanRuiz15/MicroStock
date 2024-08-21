@@ -8,9 +8,6 @@ import com.microstock.apistock.aplicacion.mappers.MapperCategoria;
 import com.microstock.apistock.aplicacion.servicios.ServicioCategoria;
 import com.microstock.apistock.dominio.interfaces.ICategoriaRepository;
 import com.microstock.apistock.dominio.servicios.ServicioCategoriaImpl;
-import com.microstock.apistock.infraestructura.repositorios.categoria.CategoriaRepositoryImpl;
-import com.microstock.apistock.infraestructura.repositorios.categoria.CategoriaRepositoryJpa;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
