@@ -1,14 +1,14 @@
-package com.microstock.apistock.dominio.excepciones.excepciones_categoria;
+package com.microstock.apistock.aplicacion.excepciones;
 
-public class DetailsErrorCategoria {
+public class ExcepcionRespuesta {
     private int statusCode;
     private String message;
     private String details;
 
-    public DetailsErrorCategoria(){
+    public ExcepcionRespuesta(){
         
     }
-    public DetailsErrorCategoria(int statusCode, String message, String details) {
+    public ExcepcionRespuesta(int statusCode, String message, String details) {
         this.statusCode = statusCode;
         this.message = message;
         this.details = details;

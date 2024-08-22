@@ -2,45 +2,45 @@ package com.microstock.apistock.dominio.servicios;
 
 import java.util.List;
 
-import com.microstock.apistock.dominio.entity.Categoria;
 import com.microstock.apistock.dominio.excepciones.excepciones_categoria.ErroresCategoria;
-import com.microstock.apistock.dominio.interfaces.ICategoriaRepository;
+import com.microstock.apistock.dominio.interfaces.ICategoriaRepositoryPort;
 import com.microstock.apistock.dominio.interfaces.ICategoriaService;
+import com.microstock.apistock.dominio.modelo.Categoria;
 import java.util.Optional;
 
 public class ServicioCategoriaImpl implements ICategoriaService{
 
-    private final ICategoriaRepository repositorio;
+    private final ICategoriaRepositoryPort repositorio;
 
-    public ServicioCategoriaImpl(ICategoriaRepository repositorio) {
+    public ServicioCategoriaImpl(ICategoriaRepositoryPort repositorio) {
         this.repositorio = repositorio;
     }
 
     @Override
-    public Categoria crearCategoria(Categoria categoria) {
-        Optional <Categoria> exietente= repositorio.findByNombreIgnoreCase(categoria.getNombre());
+    public void crearCategoria(Categoria categoria) {
+        Optional <Categoria> exietente= repositorio.findByNombreIgnoreCase(categoria.getNombre().trim());
             if(exietente.isPresent()){
             throw new ErroresCategoria("El nombre ya existe");
         }
         
-            if(categoria.getNombre().length()>50){
+            if(categoria.getNombre().trim().length()>50){
                 throw new ErroresCategoria("El nombre debe tener menos de 50 caracteres");
              
             }
-            if(categoria.getNombre().length()<1){
-                throw new ErroresCategoria("El nombre debe tener al menos 1 caracter");
+            if(categoria.getNombre().trim().length()<1){
+                throw new ErroresCategoria("El nombre no debe estar nulo");
              
             }
-            if(categoria.getDescripcion().length()>90){
+            if(categoria.getDescripcion().trim().length()>90){
                 throw new ErroresCategoria("la descripcion debe tener menos de 90 caracteres");
              
             }
-            if(categoria.getDescripcion().length()<1){
-                throw new ErroresCategoria("La descripcion debe tener al menos 1 caracter");
+            if(categoria.getDescripcion().trim().length()<1){
+                throw new ErroresCategoria("La descripcion no debe ser nula");
             }
 
             
-        return repositorio.save(categoria);
+         repositorio.saveCategoria(categoria);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.microstock.apistock.dominio.interfaces;
 
-import com.microstock.apistock.dominio.entity.Categoria;
 import java.util.List;
+
+import com.microstock.apistock.dominio.modelo.Categoria;
 public interface ICategoriaService {
 
-     Categoria crearCategoria(Categoria categoria);
+     void crearCategoria(Categoria categoria);
      List<Categoria> getAllCategoria(Integer page, Integer size);
 } 

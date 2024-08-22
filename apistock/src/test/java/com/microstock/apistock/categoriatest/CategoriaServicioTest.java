@@ -17,24 +17,26 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.microstock.apistock.dominio.entity.Categoria;
+
 import com.microstock.apistock.dominio.excepciones.excepciones_categoria.ErroresCategoria;
-import com.microstock.apistock.dominio.interfaces.ICategoriaRepository;
+import com.microstock.apistock.dominio.interfaces.ICategoriaRepositoryPort;
+import com.microstock.apistock.dominio.modelo.Categoria;
 import com.microstock.apistock.dominio.servicios.ServicioCategoriaImpl;
+import com.microstock.apistock.infraestructura.salida.entity.CategoriaEntity;
 
 
 @SpringBootTest
 class CategoriaServicioTest {
 
     @Mock
-    private ICategoriaRepository categoriaRepository;
+    private ICategoriaRepositoryPort categoriaRepository;
 
     @InjectMocks
     private ServicioCategoriaImpl servicioCategoria;
 
     @BeforeEach
     void setUp() {
-        categoriaRepository = mock(ICategoriaRepository.class);
+        categoriaRepository = mock(ICategoriaRepositoryPort.class);
         servicioCategoria = new ServicioCategoriaImpl(categoriaRepository);
     }
 
@@ -52,35 +54,30 @@ void testCrearCat_NombreDemasiadoLargo() {
 
 @Test
 void testCrearCat_NombreNulo() {
-    Categoria cate = new Categoria();
-    cate.setNombre("");
-    cate.setDescripcion("descripcion valida");
+    Categoria cate = new Categoria(1,"","descripcion valida");
     ErroresCategoria exception = assertThrows(ErroresCategoria.class, () -> {
         servicioCategoria.crearCategoria(cate);
     });
 
-    assertEquals("El nombre debe tener al menos 1 caracter", exception.getMessage());
+    assertEquals("El nombre no debe estar nulo", exception.getMessage());
 }
 
 @Test
 void testCrearCat_NombreYaExistente() {
-    Categoria categoria = new Categoria(1, "Nombre Existente", "Descripción válida");
-    Categoria categoriaa = new Categoria(2, "Nombre Existente", "Descripción válida 2");
-        when(categoriaRepository.findByNombreIgnoreCase(categoria.getNombre())).thenReturn(Optional.of(categoriaa));
+    Categoria categoriaExistente = new Categoria(1,"Existente", "Descripción existente");
+    when(categoriaRepository.findByNombreIgnoreCase("Existente"))
+            .thenReturn(Optional.of(categoriaExistente));
 
-        // Act & Assert
-        ErroresCategoria exception = assertThrows(ErroresCategoria.class, () -> {
-            servicioCategoria.crearCategoria(categoria);
-        });
+    Categoria nuevaCategoria = new Categoria(2,"Existente", "Nueva descripción");
 
-        // Verificar que el mensaje de error es el esperado
-        assert(exception.getMessage().equals("El nombre ya existe"));
+    // Act & Assert
+    ErroresCategoria excepcion = assertThrows(ErroresCategoria.class, () -> {
+        servicioCategoria.crearCategoria(nuevaCategoria);
+    });
 
-        // Verificar que se llamó al método findByNombreIgnoreCase del repositorio
-        verify(categoriaRepository, times(1)).findByNombreIgnoreCase(categoria.getNombre());
+    assertEquals("El nombre ya existe", excepcion.getMessage());
 
-        // Verificar que no se llamó al método save del repositorio
-        verify(categoriaRepository, never()).save(any(Categoria.class));
+    verify(categoriaRepository, never()).saveCategoria(any(Categoria.class));
     }
 
     @Test
@@ -103,30 +100,18 @@ void testCrearCat_NombreYaExistente() {
             servicioCategoria.crearCategoria(categoria);
         });
 
-        assertEquals("La descripcion debe tener al menos 1 caracter", exception.getMessage());
-        verify(categoriaRepository, never()).save(any(Categoria.class));
+        assertEquals("La descripcion no debe ser nula", exception.getMessage());
     }
     @Test
 void testCrearCat_Exito() {
-    Categoria categoriaACrear = new Categoria(0, "Categoria Válida", "Descripción válida");
-        Categoria categoriaCreadaEnRepositorio = new Categoria(1, "Categoria Válida", "Descripción válida");
+    Categoria categoriaValida = new Categoria(1,"Categoria Valida", "Descripción válida");
+     
+     when(categoriaRepository.findByNombreIgnoreCase(categoriaValida.getNombre())).thenReturn(Optional.empty());
 
-        when(categoriaRepository.findByNombreIgnoreCase(categoriaACrear.getNombre())).thenReturn(Optional.empty());
-        when(categoriaRepository.save(any(Categoria.class))).thenReturn(categoriaCreadaEnRepositorio);
+     servicioCategoria.crearCategoria(categoriaValida);
 
-        // Act
-        Categoria categoriaCreada = servicioCategoria.crearCategoria(categoriaACrear);
-
-        // Assert
-        assertNotNull(categoriaCreada);
-        assertEquals(categoriaCreadaEnRepositorio.getId(), categoriaCreada.getId());
-        assertEquals(categoriaCreadaEnRepositorio.getNombre(), categoriaCreada.getNombre());
-        assertEquals(categoriaCreadaEnRepositorio.getDescripcion(), categoriaCreada.getDescripcion());
-
-        // Verificar que se llamó al método findByNombreIgnoreCase del repositorio
-        verify(categoriaRepository, times(1)).findByNombreIgnoreCase(categoriaACrear.getNombre());
-
-        // Verificar que se llamó al método save del repositorio
-        verify(categoriaRepository, times(1)).save(any(Categoria.class));
-    }
+     // Verificaciones
+     verify(categoriaRepository).findByNombreIgnoreCase(categoriaValida.getNombre()); // Se verificó que se realizó la búsqueda
+     verify(categoriaRepository).saveCategoria(categoriaValida); // Se verificó que se guardó la categoría
+ }
 }

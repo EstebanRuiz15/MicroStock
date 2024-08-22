@@ -1,4 +1,4 @@
-package com.microstock.apistock.dominio.entity;
+package com.microstock.apistock.infraestructura.salida.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 
 @Table (name = "categoria")
-public class Categoria {
+public class CategoriaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,10 @@ public class Categoria {
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
-    public Categoria(){
+    public CategoriaEntity(){
 
     }
-    public Categoria(int id, String nombre,String descripcion){
+    public CategoriaEntity(int id, String nombre,String descripcion){
          this.id=id;
          this.nombre=nombre;
          this.descripcion=descripcion;
