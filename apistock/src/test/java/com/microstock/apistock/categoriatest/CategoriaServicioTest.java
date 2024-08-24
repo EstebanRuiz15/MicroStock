@@ -1,12 +1,10 @@
 package com.microstock.apistock.categoriatest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,102 +14,101 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.microstock.apistock.dominio.excepciones.excepciones_categoria.ErroresCategoria;
-import com.microstock.apistock.dominio.interfaces.ICategoriaRepositoryPort;
-import com.microstock.apistock.dominio.modelo.Categoria;
-import com.microstock.apistock.dominio.servicios.ServicioCategoriaImpl;
-import com.microstock.apistock.infraestructura.salida.entity.CategoriaEntity;
-
-
+import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorCategory;
+import com.microstock.apistock.domain.interfaces.ICategoryRepositoryPort;
+import com.microstock.apistock.domain.model.Category;
+import com.microstock.apistock.domain.services.ServiceCategoryImpl;
 @SpringBootTest
+@AutoConfigureMockMvc
 class CategoriaServicioTest {
 
     @Mock
-    private ICategoriaRepositoryPort categoriaRepository;
+    private ICategoryRepositoryPort categoriaRepository;
 
     @InjectMocks
-    private ServicioCategoriaImpl servicioCategoria;
+    private ServiceCategoryImpl servicioCategoria;
 
     @BeforeEach
     void setUp() {
-        categoriaRepository = mock(ICategoriaRepositoryPort.class);
-        servicioCategoria = new ServicioCategoriaImpl(categoriaRepository);
+        categoriaRepository = mock(ICategoryRepositoryPort.class);
+        servicioCategoria = new ServiceCategoryImpl(categoriaRepository);
     }
 
 
     @Test
 void testCrearCat_NombreDemasiadoLargo() {
-    Categoria categoria = new Categoria(1,"Nombre muy muy muy largo que excede los 50 caracteres", "Descripción válida");
+    Category category = new Category(1,"Nombre muy muy muy largo que excede los 50 caracteres", "Descripción válida");
 
-    ErroresCategoria exception = assertThrows(ErroresCategoria.class, () -> {
-        servicioCategoria.crearCategoria(categoria);
+    ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        servicioCategoria.createCategory(category);
     });
 
-    assertEquals("El nombre debe tener menos de 50 caracteres", exception.getMessage());
+    assertEquals("The name must be less than 50 characters", exception.getMessage());
 }
 
 @Test
 void testCrearCat_NombreNulo() {
-    Categoria cate = new Categoria(1,"","descripcion valida");
-    ErroresCategoria exception = assertThrows(ErroresCategoria.class, () -> {
-        servicioCategoria.crearCategoria(cate);
+    Category cate = new Category(1,"","descripcion valida");
+    ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        servicioCategoria.createCategory(cate);
     });
 
-    assertEquals("El nombre no debe estar nulo", exception.getMessage());
+    assertEquals("Name cannot be null", exception.getMessage());
 }
 
 @Test
 void testCrearCat_NombreYaExistente() {
-    Categoria categoriaExistente = new Categoria(1,"Existente", "Descripción existente");
+    Category categoriaExistente = new Category(1,"Existente", "Descripción existente");
     when(categoriaRepository.findByNombreIgnoreCase("Existente"))
             .thenReturn(Optional.of(categoriaExistente));
 
-    Categoria nuevaCategoria = new Categoria(2,"Existente", "Nueva descripción");
+    Category nuevaCategoria = new Category(2,"Existente", "Nueva descripción");
 
     // Act & Assert
-    ErroresCategoria excepcion = assertThrows(ErroresCategoria.class, () -> {
-        servicioCategoria.crearCategoria(nuevaCategoria);
+    ErrorCategory excepcion = assertThrows(ErrorCategory.class, () -> {
+        servicioCategoria.createCategory(nuevaCategoria);
     });
 
-    assertEquals("El nombre ya existe", excepcion.getMessage());
+    assertEquals("The name is already exists", excepcion.getMessage());
 
-    verify(categoriaRepository, never()).saveCategoria(any(Categoria.class));
+    verify(categoriaRepository, never()).saveCategory(any(Category.class));
     }
 
     @Test
     void descripcionDemasiadoLarga() {
-        Categoria categoria = new Categoria(1,"Nombre válido", "Descripción muy muy muy larga que excede los 90 caracteres"
+        Category categoria = new Category(1,"Nombre válido", "Descripción muy muy muy larga que excede los 90 caracteres"
                                                                         +"Esta descripcion deberia tener demasiados caracteres para implementar la excepcion");
 
-        ErroresCategoria exception = assertThrows(ErroresCategoria.class, () -> {
-            servicioCategoria.crearCategoria(categoria);
+        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+            servicioCategoria.createCategory(categoria);
         });
 
-        assertEquals("la descripcion debe tener menos de 90 caracteres", exception.getMessage());
+        assertEquals("The description must be less than 90 characters", exception.getMessage());
     }
 
     @Test
     void descripcionnula() {
-        Categoria categoria = new Categoria(1,"Nombre válido", "");
+        Category categoria = new Category(1,"Nombre válido", "");
 
-        ErroresCategoria exception = assertThrows(ErroresCategoria.class, () -> {
-            servicioCategoria.crearCategoria(categoria);
+        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+            servicioCategoria.createCategory(categoria);
         });
 
-        assertEquals("La descripcion no debe ser nula", exception.getMessage());
+        assertEquals("Description cannot be null", exception.getMessage());
     }
     @Test
 void testCrearCat_Exito() {
-    Categoria categoriaValida = new Categoria(1,"Categoria Valida", "Descripción válida");
+    Category categoriaValida = new Category(1,"Categoria Valida", "Descripción válida");
      
-     when(categoriaRepository.findByNombreIgnoreCase(categoriaValida.getNombre())).thenReturn(Optional.empty());
+     when(categoriaRepository.findByNombreIgnoreCase(categoriaValida.getName())).thenReturn(Optional.empty());
 
-     servicioCategoria.crearCategoria(categoriaValida);
+     servicioCategoria.createCategory(categoriaValida);
 
      // Verificaciones
-     verify(categoriaRepository).findByNombreIgnoreCase(categoriaValida.getNombre()); // Se verificó que se realizó la búsqueda
-     verify(categoriaRepository).saveCategoria(categoriaValida); // Se verificó que se guardó la categoría
+     verify(categoriaRepository).findByNombreIgnoreCase(categoriaValida.getName()); // Se verificó que se realizó la búsqueda
+     verify(categoriaRepository).saveCategory(categoriaValida); // Se verificó que se guardó la categoría
  }
 }
