@@ -57,7 +57,7 @@ class ControllerTest {
 
     @Test
     void testCrearCategoria_Created() throws Exception {
-        // Mock del mapeo y creación de categoría
+       
         doNothing().when(serviceCategoria).createCategory(any());
         when(mapperadd.toCategoria(any(CategoryDtoAdd.class))).thenReturn(new Category(1,"nombre","descri"));
 
@@ -71,7 +71,7 @@ class ControllerTest {
 
     @Test
     void testCrearCategoria_Error() throws Exception {
-        // Simulamos un error en la creación de la categoría
+       
         doThrow(new RuntimeException("Error al crear categoría")).when(serviceCategoria).createCategory(any());
 
         mockMvc.perform(post("/category/add")
@@ -89,7 +89,7 @@ class ControllerTest {
         String orden = "asc";
 
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category(1,"name","descri")); // Agregar categorías a la lista
+        categories.add(new Category(1,"name","descri")); 
         categories.add(new Category(2,"name 2", "descri 2"));
 
         PaginCategory paginCategory = new PaginCategory(
@@ -113,15 +113,15 @@ class ControllerTest {
 
 @Test
 void testGetAllCategory_Failure() throws Exception {
-    Integer page = -1;  // Valor inválido
+    Integer page = -1;  // invalid parameter
     Integer size = 10;
     String orden = "asc";
 
-    // Configura el servicio para lanzar una excepción cuando se recibe un parámetro inválido
+   
     when(serviceCategoria.getAllCategory(page, size, orden))
         .thenThrow(new ErrorCategory(ConstantsDomain.PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE));
 
-    // Act y Assert: Verifica que el controlador maneja la excepción correctamente
+    // Act y Assert: verify that the controller handler the correct exception 
     mockMvc.perform(get("/category/?page=-1&size=10&orden=asc"))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.statusCode").value(400))
