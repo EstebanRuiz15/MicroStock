@@ -62,22 +62,21 @@ public class ServiceCategoryImpl implements ICategoryService{
 
             List<Category> allCategory = repositorio.findByCategorias(orden.trim());
             
-            // Calcular índices
+            // Calculate index
             Integer totalCategorys = allCategory.size();
             Integer from = Math.min(page * size, totalCategorys);
             Integer to = Math.min((page + ConstantsDomain.ONE) * size, totalCategorys);
             
-            // Obtener productos de la página actual
+            // get categories of the current page
             List<Category> categorypage = allCategory.subList(from, to);
             
-            // Calcular total de páginas
+            // calculate total of pages
             Integer totalPage = (int) Math.ceil((double) totalCategorys / size);
 
             if(categorypage.isEmpty()){
                throw new ErrorCategory(ConstantsDomain.NO_CATEGORIES_FOUND_EXCEPTION_MESSAGE);
             }
             
-            // Construir la respuesta
             return new PaginCategory(
             categorypage,
             page,
