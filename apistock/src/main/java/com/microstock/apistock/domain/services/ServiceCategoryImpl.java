@@ -61,6 +61,9 @@ public class ServiceCategoryImpl implements ICategoryService{
             }
 
             List<Category> allCategory = repositorio.findByCategorias(orden.trim());
+            if(allCategory.isEmpty()){
+                throw new ErrorException(ConstantsDomain.NO_DATA_CATEGORY_EXCEPTION_MESSAGE);
+            }
             
             // Calculate index
             Integer totalCategorys = allCategory.size();
@@ -74,7 +77,8 @@ public class ServiceCategoryImpl implements ICategoryService{
             Integer totalPage = (int) Math.ceil((double) totalCategorys / size);
 
             if(categorypage.isEmpty()){
-               throw new ErrorException(ConstantsDomain.NO_CATEGORIES_FOUND_EXCEPTION_MESSAGE);
+               throw new ErrorException(ConstantsDomain.NO_CATEGORIES_FOUND_EXCEPTION_MESSAGE+
+                                        ConstantsDomain.TOTAL_PAGES+totalPage);
             }
             
             return new PaginCategory(

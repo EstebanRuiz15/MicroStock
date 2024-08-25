@@ -170,7 +170,7 @@ void testCrearCat_Exito() {
         ErrorException exception = assertThrows(ErrorException.class, () -> {
             servicioCategoria.getAllCategory(page, size, orden);
         });
-        assertEquals(ConstantsDomain.NO_CATEGORIES_FOUND_EXCEPTION_MESSAGE, exception.getMessage());
+        assertEquals(ConstantsDomain.NO_DATA_CATEGORY_EXCEPTION_MESSAGE, exception.getMessage());
     }
     @Test
     void testGetAllCategory_ValidParameters() {

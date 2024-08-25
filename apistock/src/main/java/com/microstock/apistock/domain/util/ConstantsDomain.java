@@ -22,5 +22,10 @@ public final class  ConstantsDomain {
     public static final Integer ZERO=0;
     public static final String PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE="The number of pages cannot be negative";
     public static final String SIZE_MIN_CHARACTER_EXCEPTION_MESSAGE="The size number must be greater than 0";
-    public static final String NO_CATEGORIES_FOUND_EXCEPTION_MESSAGE="NO categories were found";
+    public static final String NO_CATEGORIES_FOUND_EXCEPTION_MESSAGE="NO categories were found for this page";
+    public static final String NO_BRANDS_FOUND_EXCEPTION_MESSAGE="NO brands were found for this page";
+    public static final String NO_DATA_BRANDS_EXCEPTION_MESSAGE="No brand data";
+    public static final String NO_DATA_CATEGORY_EXCEPTION_MESSAGE="No category data";
+    public static final String TOTAL_PAGES=", total pages is: ";
+
 }

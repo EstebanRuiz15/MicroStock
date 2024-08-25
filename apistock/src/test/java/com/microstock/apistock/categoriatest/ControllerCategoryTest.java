@@ -32,7 +32,7 @@ import java.util.List;
     
 @SpringBootTest   
 @AutoConfigureMockMvc
-class ControllerTest {
+class ControllerCategoryTest {
      @Autowired
     private MockMvc mockMvc;
 
