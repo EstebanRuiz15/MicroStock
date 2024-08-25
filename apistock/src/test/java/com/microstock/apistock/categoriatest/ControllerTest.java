@@ -1,6 +1,6 @@
 package com.microstock.apistock.categoriatest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorCategory;
+import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
 import com.microstock.apistock.domain.interfaces.ICategoryService;
 import com.microstock.apistock.domain.model.Category;
 import com.microstock.apistock.domain.util.ConstantsDomain;
@@ -119,7 +119,7 @@ void testGetAllCategory_Failure() throws Exception {
 
    
     when(serviceCategoria.getAllCategory(page, size, orden))
-        .thenThrow(new ErrorCategory(ConstantsDomain.PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE));
+        .thenThrow(new ErrorException(ConstantsDomain.PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE));
 
     // Act y Assert: verify that the controller handler the correct exception 
     mockMvc.perform(get("/category/?page=-1&size=10&orden=asc"))

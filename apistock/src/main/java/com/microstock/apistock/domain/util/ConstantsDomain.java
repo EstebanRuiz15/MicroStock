@@ -10,9 +10,11 @@ public final class  ConstantsDomain {
     public static final String NAME_NOT_NULL_EXCEPTION_MESSAGE = "Name cannot be null";
     public static final String DESCRIPTION_MAX_CHARACTERS_EXCEPTION_MESSAGE = "The description must be less than 90 characters";
     public static final String DESCRIPTION_NOT_NULL_EXCEPTION_MESSAGE = "Description cannot be null";
+    public static final String DESCRIPTION_MAX_CHARACTERS_BRAND_EXCEPTION_MESSAGE = "The description must be less than 120 characters";
     public static final Long NOT_NULL=1L;
     public static final Long MAX_NAME_CHARACTERS =50L;
     public static final Long MAX_DESCRIPTION_CHARACTERS =90L;
+    public static final Long MAX_DESCRIPTION_BRAND_CHARACTERS =120L;
     public static final Integer ONE =1;
     public static final String ASC="asc";
     public static final String DESC="desc";

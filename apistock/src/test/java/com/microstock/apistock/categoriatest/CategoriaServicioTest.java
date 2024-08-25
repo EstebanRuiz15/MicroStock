@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorCategory;
+import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
 import com.microstock.apistock.domain.interfaces.ICategoryRepositoryPort;
 import com.microstock.apistock.domain.model.Category;
 import com.microstock.apistock.domain.services.ServiceCategoryImpl;
@@ -47,7 +47,7 @@ class CategoriaServicioTest {
 void testCrearCat_NombreDemasiadoLargo() {
     Category category = new Category(1,"Nombre muy muy muy largo que excede los 50 caracteres", "Descripción válida");
 
-    ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+    ErrorException exception = assertThrows(ErrorException.class, () -> {
         servicioCategoria.createCategory(category);
     });
 
@@ -57,7 +57,7 @@ void testCrearCat_NombreDemasiadoLargo() {
 @Test
 void testCrearCat_NombreNulo() {
     Category cate = new Category(1,"","descripcion valida");
-    ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+    ErrorException exception = assertThrows(ErrorException.class, () -> {
         servicioCategoria.createCategory(cate);
     });
 
@@ -73,7 +73,7 @@ void testCrearCat_NombreYaExistente() {
     Category nuevaCategoria = new Category(2,"Existente", "Nueva descripción");
 
     // Act & Assert
-    ErrorCategory excepcion = assertThrows(ErrorCategory.class, () -> {
+    ErrorException excepcion = assertThrows(ErrorException.class, () -> {
         servicioCategoria.createCategory(nuevaCategoria);
     });
 
@@ -87,7 +87,7 @@ void testCrearCat_NombreYaExistente() {
         Category categoria = new Category(1,"Nombre válido", "Descripción muy muy muy larga que excede los 90 caracteres"
                                                                         +"Esta descripcion deberia tener demasiados caracteres para implementar la excepcion");
 
-        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        ErrorException exception = assertThrows(ErrorException.class, () -> {
             servicioCategoria.createCategory(categoria);
         });
 
@@ -98,7 +98,7 @@ void testCrearCat_NombreYaExistente() {
     void descripcionnula() {
         Category categoria = new Category(1,"Nombre válido", "");
 
-        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        ErrorException exception = assertThrows(ErrorException.class, () -> {
             servicioCategoria.createCategory(categoria);
         });
 
@@ -123,7 +123,7 @@ void testCrearCat_Exito() {
         Integer size = 10;
         String orden = "invalid";
 
-        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        ErrorException exception = assertThrows(ErrorException.class, () -> {
             servicioCategoria.getAllCategory(page, size, orden);
         });
         assertEquals(ConstantsDomain.ORDEN_DIFERENT_ASC_OR_DESC_EXCEPTION_MESSAGE, exception.getMessage());
@@ -137,7 +137,7 @@ void testCrearCat_Exito() {
         String orden = "asc";
 
         // Act & Assert
-        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        ErrorException exception = assertThrows(ErrorException.class, () -> {
             servicioCategoria.getAllCategory(page, size, orden);
         });
         assertEquals(ConstantsDomain.PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE, exception.getMessage());
@@ -151,7 +151,7 @@ void testCrearCat_Exito() {
         String orden = "asc";
 
         // Act & Assert
-        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        ErrorException exception = assertThrows(ErrorException.class, () -> {
             servicioCategoria.getAllCategory(page, size, orden);
         });
         assertEquals(ConstantsDomain.SIZE_MIN_CHARACTER_EXCEPTION_MESSAGE, exception.getMessage());
@@ -167,7 +167,7 @@ void testCrearCat_Exito() {
         when(categoriaRepository.findByCategorias(orden)).thenReturn(allCategories);
 
         // Act & Assert
-        ErrorCategory exception = assertThrows(ErrorCategory.class, () -> {
+        ErrorException exception = assertThrows(ErrorException.class, () -> {
             servicioCategoria.getAllCategory(page, size, orden);
         });
         assertEquals(ConstantsDomain.NO_CATEGORIES_FOUND_EXCEPTION_MESSAGE, exception.getMessage());
