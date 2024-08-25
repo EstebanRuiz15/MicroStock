@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorCategory;
+import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
 
 @ControllerAdvice
 public class ControlAdvice {
     
-    @ExceptionHandler(ErrorCategory.class)
-    public ResponseEntity<?> resourceNotFoundException(ErrorCategory ex, WebRequest request) {
+    @ExceptionHandler(ErrorException.class)
+    public ResponseEntity<?> resourceNotFoundException(ErrorException ex, WebRequest request) {
         ExceptionResponse errorDetails = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
                 request.getDescription(false));
