@@ -1,83 +1,176 @@
 package com.microstock.apistock.brandtest;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
+import com.microstock.apistock.domain.interfaces.IBrandRepositoryPort;
+import com.microstock.apistock.domain.model.Brand;
+import com.microstock.apistock.domain.services.ServiceBrandImpl;
+import com.microstock.apistock.domain.util.ConstantsDomain;
+import com.microstock.apistock.domain.util.PaginBrand;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microstock.apistock.domain.interfaces.IBrandService;
-import com.microstock.apistock.domain.model.Brand;
-import com.microstock.apistock.infraestructur.driving_http.controllers.ControllerBrand;
-import com.microstock.apistock.infraestructur.driving_http.dtos.request.BrandDtoAdd;
-import com.microstock.apistock.infraestructur.driving_http.mappers.IBrandRequestAddMapper;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 
-@SpringBootTest   
-@AutoConfigureMockMvc
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@SpringBootTest
 class BrandServiceTest {
-    private MockMvc mockMvc;
+    
 
     @Mock
-    private IBrandService brandService;
-
-    @Mock
-    private IBrandRequestAddMapper brandRequestMapper;
+    private IBrandRepositoryPort repository;
 
     @InjectMocks
-    private ControllerBrand controllerBrand;
-
-    private BrandDtoAdd brandDtoAdd;
-    private ObjectMapper objectMapper;
+    private ServiceBrandImpl service;
 
     @BeforeEach
-    void setup() {
-        brandDtoAdd = new BrandDtoAdd();
-        brandDtoAdd.setName("Nueva Categoria");
-        brandDtoAdd.setDescription("Descripción válida");
-
-        objectMapper = new ObjectMapper();
+    void setUp() {
+        repository = mock(IBrandRepositoryPort.class);
+        service = new ServiceBrandImpl(repository);
     }
 
+   
     @Test
-    void addProduct_Success() throws Exception {
+    void createBrand_NameAlreadyExists() {
+        Brand brand = new Brand(1, "ExistingBrand", "Description");
 
-        doNothing().when(brandService).createBrand(any());
-         when(brandRequestMapper.toBrand(any(BrandDtoAdd.class))).thenReturn(new Brand (1,"nombre","descri"));
-        mockMvc = MockMvcBuilders.standaloneSetup(controllerBrand).build();
+        when(repository.findByNombreIgnoreCase(any())).thenReturn(Optional.of(brand));
 
-        mockMvc.perform(post("/brand/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(brandDtoAdd)))
-                .andExpect(status().isCreated());
-        verify(brandService, times(1)).createBrand(any());
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.createBrand(brand));
+        assertEquals(ConstantsDomain.NAME_ALREADY_EXISTS_EXCEPTION_MESSAGE, thrown.getMessage());
     }
 
+   
     @Test
-    void addProduct_Failure() throws Exception {
-        doThrow(new RuntimeException("Error al crear la marca")).when(brandService).createBrand(any());
+    void createBrand_NameTooLong() {
+        Brand brand = new Brand(1, "ThisNameIsWayTooLongToBeAcceptedByTheSystemmoreargename", "Description");
 
-        mockMvc = MockMvcBuilders.standaloneSetup(controllerBrand).build();
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.createBrand(brand));
+        assertEquals(ConstantsDomain.NAME_MAX_CHARACTERS_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
 
-        mockMvc.perform(post("/brand/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(brandDtoAdd)))
-                .andExpect(status().isInternalServerError());
+   
+    @Test
+    void createBrand_NameTooShort() {
+        Brand brand = new Brand(1, "", "Description");
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.createBrand(brand));
+        assertEquals(ConstantsDomain.NAME_NOT_NULL_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
     
-    verify(brandService, times(1)).createBrand(any());
-   } 
+    @Test
+    void createBrand_DescriptionTooLong() {
+        Brand brand = new Brand(1, "BrandName", "a".repeat(121));
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.createBrand(brand));
+        assertEquals(ConstantsDomain.DESCRIPTION_MAX_CHARACTERS_BRAND_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
+   
+    @Test
+    void createBrand_DescriptionTooShort() {
+        Brand brand = new Brand(1, "BrandName", "");
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.createBrand(brand));
+        assertEquals(ConstantsDomain.DESCRIPTION_NOT_NULL_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
+   
+    @Test
+    void getAllBrand_Success() {
+    
+        Integer page = 0;
+        Integer size = 10;
+        String orden = "asc";
+
+        List<Brand> allBrands = Arrays.asList(
+            new Brand(1, "Brand1", "Description1"),
+            new Brand(2, "Brand2", "Description2"),
+            new Brand(3, "Brand3", "Description3")
+        );
+
+    
+        when(repository.findByBrand(orden)).thenReturn(allBrands);
+        
+        PaginBrand result = service.getAllBrand(page, size, orden);
+
+        assertNotNull(result,"El resultado no debe ser nulo");
+        assertEquals(3, result.getBrands().size(),"el tamanio de las marcas debe ser 3");
+        assertEquals(page, result.getCurrentPage(), "la pagina actual debe ser 0");
+        assertEquals(size, result.getSize(),"el tamanio de la pagina debe ser 10");
+        assertEquals(1, result.getTotalPages(), "el total de paginas debe ser 1");
+        assertEquals(3, result.getTotalData(), "el total de datos debe ser 3");
+    }
+
+    
+    @Test
+    void getAllBrand_InvalidOrder() {
+        Integer page = 0;
+        Integer size = 2;
+        String orden = "invalid_order";
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.getAllBrand(page, size, orden));
+        assertEquals(ConstantsDomain.ORDEN_DIFERENT_ASC_OR_DESC_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
+   
+    @Test
+    void getAllBrand_InvalidPage() {
+        Integer page = -1;
+        Integer size = 2;
+        String orden = "asc";
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.getAllBrand(page, size, orden));
+        assertEquals(ConstantsDomain.PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
+    
+    @Test
+    void getAllBrand_InvalidSize() {
+        Integer page = 0;
+        Integer size = 0;
+        String orden = "asc";
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.getAllBrand(page, size, orden));
+        assertEquals(ConstantsDomain.SIZE_MIN_CHARACTER_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
+    
+    @Test
+    void getAllBrand_NoBrandsFound() {
+        Integer page = 0;
+        Integer size = 2;
+        String orden = "asc";
+
+        when(repository.findByBrand(orden)).thenReturn(Collections.emptyList());
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.getAllBrand(page, size, orden));
+        assertEquals(ConstantsDomain.NO_DATA_BRANDS_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
+   
+    @Test
+    void getAllBrand_EmptyPage() {
+        Integer page = 1; 
+        Integer size = 2;
+        String orden = "asc";
+
+        List<Brand> brands = Arrays.asList(new Brand(1, "Brand1", "Description1"));
+        when(repository.findByBrand(orden)).thenReturn(brands);
+
+        ErrorException thrown = assertThrows(ErrorException.class, () -> service.getAllBrand(page, size, orden));
+        assertEquals(ConstantsDomain.NO_BRANDS_FOUND_EXCEPTION_MESSAGE + ConstantsDomain.TOTAL_PAGES + 1, thrown.getMessage());
+    }
 }

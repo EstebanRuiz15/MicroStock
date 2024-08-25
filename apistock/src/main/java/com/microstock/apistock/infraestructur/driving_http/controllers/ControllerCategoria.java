@@ -65,11 +65,13 @@ public class ControllerCategoria {
                          +" I want to bring the categories ordered ascending or descending by name\n\n" + //
                  "       -This service must be paginated")
     @ApiResponses(value = {
-         @ApiResponse(responseCode = "200", description = "List of categories"),
+         @ApiResponse(responseCode = "200", description = "List of categories and pagination data"),
          @ApiResponse(responseCode = "400", description = " Invalid parameter. Possible errors:\n\n" +
                                                           "    - `page`: Cannot be negative.\n\n" +
                                                           "    - `size`: Must be greater than zero.\n\n" +
-                                                          "    - `order`: Must be 'asc' or 'desc'.")
+                                                          "    - `order`: Must be 'asc' or 'desc'."),
+         @ApiResponse(responseCode = "404", description = "    - 'Not categories in this pages', Toal pages is:\n\n"+
+                                                           "   - 'Not categories found")
                 })
     @GetMapping("/")
     public ResponseEntity<PaginCategory>getAllCategory(

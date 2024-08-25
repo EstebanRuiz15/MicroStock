@@ -21,6 +21,10 @@ public class BrandEntity {
     @Column(name="descripcion", length = 120, nullable = false)
     private String description;
 
+    public BrandEntity(){
+
+    }
+    
     public BrandEntity(int id, String name, String description) {
         this.id = id;
         this.name = name;
