@@ -9,6 +9,7 @@ import com.microstock.apistock.infraestructur.driven_rp.entity.CategoryEntity;
     public interface ICategoriaToEntitymapper {
     
         CategoryEntity toCategoriaEntity(Category category);
+        Category toCategory(CategoryEntity categoryEntity);
     
     }
     
