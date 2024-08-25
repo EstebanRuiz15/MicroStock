@@ -3,8 +3,6 @@ package com.microstock.apistock.domain.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.tomcat.util.bcel.Const;
-
 import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorCategory;
 import com.microstock.apistock.domain.interfaces.ICategoryRepositoryPort;
 import com.microstock.apistock.domain.interfaces.ICategoryService;

@@ -2,7 +2,6 @@ package com.microstock.apistock.infraestructur.driven_rp.adapter;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.jar.Attributes.Name;
 import java.util.stream.Collectors;
 
 import com.microstock.apistock.domain.interfaces.ICategoryRepositoryPort;

@@ -1,8 +1,5 @@
 package com.microstock.apistock.infraestructur.driving_http.controllers;
 
-import java.util.List;
-
-import org.springdoc.core.converters.models.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,8 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.microstock.apistock.domain.interfaces.ICategoryService;
 import com.microstock.apistock.domain.util.PaginCategory;
 import com.microstock.apistock.infraestructur.driving_http.dtos.request.CategoryDtoAdd;
-import com.microstock.apistock.infraestructur.driving_http.dtos.response.CategoryResponse;
-import com.microstock.apistock.infraestructur.driving_http.mappers.ICategoryResponseMapper;
 import com.microstock.apistock.infraestructur.driving_http.mappers.IMapperPeticionAdd;
 import com.microstock.apistock.infraestructur.util.ConstantsInfraestructure;
 
@@ -32,12 +27,10 @@ public class ControllerCategoria {
     
     private final ICategoryService serviceCategoria;
     private final IMapperPeticionAdd mapperadd;
-    private final ICategoryResponseMapper iCategoryResponseMapper;
 
-    public ControllerCategoria(ICategoryService serviceCategoria, IMapperPeticionAdd mapperadd, ICategoryResponseMapper iCategoryResponseMapper) {
+    public ControllerCategoria(ICategoryService serviceCategoria, IMapperPeticionAdd mapperadd) {
         this.serviceCategoria= serviceCategoria;
         this.mapperadd=mapperadd;
-        this.iCategoryResponseMapper=iCategoryResponseMapper;
     }
 
     @Operation(summary = "Method for creating categories", 

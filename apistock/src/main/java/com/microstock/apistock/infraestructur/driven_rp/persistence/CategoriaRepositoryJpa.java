@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface CategoriaRepositoryJpa extends JpaRepository<CategoryEntity, Integer> {
     Optional<Category> findByNameIgnoreCase(String name);
+    @SuppressWarnings("null")
     List<CategoryEntity> findAll(Sort sort);
 
 }
