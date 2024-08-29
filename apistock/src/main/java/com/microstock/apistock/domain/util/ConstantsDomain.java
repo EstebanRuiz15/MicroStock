@@ -27,5 +27,8 @@ public final class  ConstantsDomain {
     public static final String NO_DATA_BRANDS_EXCEPTION_MESSAGE="No brand data";
     public static final String NO_DATA_CATEGORY_EXCEPTION_MESSAGE="No category data";
     public static final String TOTAL_PAGES=", total pages is: ";
-
+    public static final String ELEMENTS_REPEATS_MESSAGE="The list cannot have repeated elements";
+    public static final String ERROR_VALIDATION="Error of validation";
+    public static final String NO_CATEGORY_EXCEPTION_MESSAGE="Category not found";
+    public static final String NO_BRAND_EXCEPTION_MESSAGE="Brand not found";
 }
