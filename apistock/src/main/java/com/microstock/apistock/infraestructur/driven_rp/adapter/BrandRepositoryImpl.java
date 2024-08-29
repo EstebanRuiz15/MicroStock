@@ -42,5 +42,10 @@ public class BrandRepositoryImpl implements IBrandRepositoryPort {
                 .map(brandToEntityMapper::toBrand)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<BrandEntity> findById(Integer id) {
+        return jparepository.findById(id);
+    }
     
 }

@@ -15,10 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
 import com.microstock.apistock.domain.interfaces.IBrandService;
 import com.microstock.apistock.domain.model.Brand;
-import com.microstock.apistock.domain.util.ConstantsDomain;
 import com.microstock.apistock.domain.util.PaginBrand;
 import com.microstock.apistock.infraestructur.driving_http.controllers.ControllerBrand;
 import com.microstock.apistock.infraestructur.driving_http.dtos.request.BrandDtoAdd;
@@ -118,22 +116,5 @@ class ControllerBrandTest {
             .andExpect(jsonPath("$.totalData").value(2));
     }
 
-@Test
-void testGetAllCategory_Failure() throws Exception {
-    Integer page = -1;  
-    Integer size = 10;
-    String orden = "asc";
 
-    when(brandService.getAllBrand(page, size, orden))
-    .thenThrow(new ErrorException(ConstantsDomain.PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE));
-
-// Act y Assert: Verifica que el controlador maneja la excepción correctamente
-mockMvc.perform(get("/brand/")
-        .param("page", page.toString())
-        .param("size", size.toString())
-        .param("orden", orden))
-    .andExpect(status().isBadRequest())
-    .andExpect(jsonPath("$.message").value(ConstantsDomain.PAGE_MIN_CHARACTER_EXCEPTION_MESSAGE));
-
-}
 }

@@ -9,6 +9,7 @@ import com.microstock.apistock.domain.interfaces.IBrandService;
 import com.microstock.apistock.domain.model.Brand;
 import com.microstock.apistock.domain.util.ConstantsDomain;
 import com.microstock.apistock.domain.util.PaginBrand;
+import com.microstock.apistock.infraestructur.driven_rp.entity.BrandEntity;
 
 public class ServiceBrandImpl implements IBrandService {
     
@@ -87,5 +88,10 @@ public class ServiceBrandImpl implements IBrandService {
             totalPage,
             totalBrands);
 
+    }
+
+    @Override
+    public Optional<BrandEntity> findById(Integer id) {
+       return repository.findById(id);
     }
 }

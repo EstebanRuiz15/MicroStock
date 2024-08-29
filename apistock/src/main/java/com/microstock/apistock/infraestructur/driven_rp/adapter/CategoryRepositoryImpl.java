@@ -38,5 +38,9 @@ public class CategoryRepositoryImpl implements ICategoryRepositoryPort{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Optional<CategoryEntity> findById(Integer id) {
+        return jpaRepository.findById(id);
+}
     
 }

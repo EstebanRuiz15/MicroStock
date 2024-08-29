@@ -9,6 +9,7 @@ import com.microstock.apistock.domain.interfaces.ICategoryService;
 import com.microstock.apistock.domain.model.Category;
 import com.microstock.apistock.domain.util.ConstantsDomain;
 import com.microstock.apistock.domain.util.PaginCategory;
+import com.microstock.apistock.infraestructur.driven_rp.entity.CategoryEntity;
 
 public class ServiceCategoryImpl implements ICategoryService{
 
@@ -89,4 +90,10 @@ public class ServiceCategoryImpl implements ICategoryService{
             totalCategorys);
 
     }
+
+    @Override
+    public Optional<CategoryEntity> findById(Integer id) {
+        return repositorio.findById(id);
+    }
+
 }

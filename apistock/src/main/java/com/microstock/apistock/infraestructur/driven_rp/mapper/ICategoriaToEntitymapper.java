@@ -1,5 +1,6 @@
 package com.microstock.apistock.infraestructur.driven_rp.mapper;
 
+
 import org.mapstruct.Mapper;
 
 import com.microstock.apistock.domain.model.Category;
