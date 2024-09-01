@@ -46,7 +46,7 @@ public class BeansConfig {
                 .info(new Info()
                         .title("Microservice Stock")
                         .version("1.0.0")
-                        .description("allows you to obtain information about the Amazon ecommerce stock"));
+                        .description("allows you to obtain information about the Emazon ecommerce stock"));
     }
 
    

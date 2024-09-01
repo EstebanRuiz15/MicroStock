@@ -23,12 +23,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 @RequestMapping("/category")
 @Service 
-public class ControllerCategoria {
+public class ControllerCategory {
     
     private final ICategoryService serviceCategoria;
     private final IMapperPeticionAdd mapperadd;
 
-    public ControllerCategoria(ICategoryService serviceCategoria, IMapperPeticionAdd mapperadd) {
+    public ControllerCategory(ICategoryService serviceCategoria, IMapperPeticionAdd mapperadd) {
         this.serviceCategoria= serviceCategoria;
         this.mapperadd=mapperadd;
     }

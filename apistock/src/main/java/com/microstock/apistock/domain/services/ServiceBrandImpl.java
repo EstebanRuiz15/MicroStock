@@ -3,7 +3,7 @@ package com.microstock.apistock.domain.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
+import com.microstock.apistock.domain.exception.ErrorException;
 import com.microstock.apistock.domain.interfaces.IBrandRepositoryPort;
 import com.microstock.apistock.domain.interfaces.IBrandService;
 import com.microstock.apistock.domain.model.Brand;

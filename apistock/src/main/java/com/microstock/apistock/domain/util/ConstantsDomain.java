@@ -31,4 +31,10 @@ public final class  ConstantsDomain {
     public static final String ERROR_VALIDATION="Error of validation";
     public static final String NO_CATEGORY_EXCEPTION_MESSAGE="Category not found";
     public static final String NO_BRAND_EXCEPTION_MESSAGE="Brand not found";
+    public static final String ORDEN_NAME_DIFERENT_EXCEPTION_MESSAGE="The order name should only by 'category', 'brand' or 'article'";
+    public static final String ARTICLE="article";
+    public static final String BRAND="brand";
+    public static final String CATEGORY="category";
+    public static final String NO_DATA_ARTICLE_EXCEPTION_MESSAGE="No article data";
+    public static final String NO_ARTICLES_FOUND_EXCEPTION_MESSAGE="NO articles were found for this page";
 }

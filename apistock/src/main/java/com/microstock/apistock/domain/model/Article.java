@@ -9,17 +9,17 @@ public class Article {
     private final String description;
     private final Double price;
     private final Integer quantity;
-    private final Integer brandId;
-    private final List <Integer> categoriesId;
-    public Article(Integer id, String name, String description, Double price, Integer quantity, Integer brandId,
-            List<Integer> categoriesId) {
+    private final Brand brand;
+    private final List <Category> categories;
+    public Article(Integer id, String name, String description, Double price, Integer quantity, Brand brand,
+            List<Category> categories) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.brandId = brandId;
-        this.categoriesId = categoriesId;
+        this.brand = brand;
+        this.categories = categories;
     }
     public Integer getId() {
         return id;
@@ -36,12 +36,15 @@ public class Article {
     public Integer getQuantity() {
         return quantity;
     }
-    public Integer getBrandId() {
-        return brandId;
+    public Brand getBrand() {
+        return brand;
     }
-    public List<Integer> getCategoriesId() {
-        return categoriesId;
+    public List<Category> getCategories() {
+        return categories;
     }
+    
+    
+   
 
 
     

@@ -1,9 +1,8 @@
 package com.microstock.apistock.articletest;
 
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-
+import com.microstock.apistock.domain.exception.ErrorException;
 import com.microstock.apistock.domain.interfaces.IArticleService;
 import com.microstock.apistock.infraestructur.driving_http.controllers.ControllerArticle;
 import com.microstock.apistock.infraestructur.driving_http.mappers.IArticleRequestAddMapper;
@@ -13,10 +12,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class ControllerArticleTest {
-
+    @Autowired 
     private MockMvc mockMvc;
 
     @Mock
@@ -87,4 +89,56 @@ void addArticle_InvalidRequest_ReturnsBadRequest() throws Exception {
 String responseContent = result.getResponse().getContentAsString();
 System.out.println("Response JSON: " + responseContent);
 }
+
+
+    @Test
+    void testGetAllBrand_BadRequest_InvalidPage() throws Exception {
+       // Configurar el comportamiento esperado del servicio
+    when(articleService.getAllArticles(any(Integer.class), any(Integer.class), any(String.class), any(String.class)))
+    .thenThrow(new ErrorException("Page number cannot be negative"));
+
+        // Act & Assert
+        mockMvc.perform(MockMvcRequestBuilders.get("/article/")
+                .param("page", "-1")
+                .param("size", "10")
+                .param("orden", "asc")
+                .param("nameOrden", "article")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+    @Test
+    void testGetAllBrand_BadRequest_InvalidSize() throws Exception {
+        // Act & Assert
+        mockMvc.perform(MockMvcRequestBuilders.get("/article/")
+                .param("page", "0")
+                .param("size", "0") // Invalid size
+                .param("orden", "asc")
+                .param("nameOrden", "article")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void testGetAllBrand_BadRequest_InvalidOrder() throws Exception {
+        // Act & Assert
+        mockMvc.perform(MockMvcRequestBuilders.get("/article/")
+                .param("page", "0")
+                .param("size", "10")
+                .param("orden", "invalid") // Invalid order
+                .param("nameOrden", "article")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void testGetAllBrand_BadRequest_InvalidNameOrder() throws Exception {
+        // Act & Assert
+        mockMvc.perform(MockMvcRequestBuilders.get("/article/")
+                .param("page", "0")
+                .param("size", "10")
+                .param("orden", "asc")
+                .param("nameOrden", "invalid")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }

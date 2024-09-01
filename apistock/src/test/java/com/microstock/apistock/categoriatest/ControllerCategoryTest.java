@@ -1,6 +1,6 @@
 package com.microstock.apistock.categoriatest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
+import com.microstock.apistock.domain.exception.ErrorException;
 import com.microstock.apistock.domain.interfaces.ICategoryService;
 import com.microstock.apistock.domain.model.Category;
 import com.microstock.apistock.domain.util.ConstantsDomain;

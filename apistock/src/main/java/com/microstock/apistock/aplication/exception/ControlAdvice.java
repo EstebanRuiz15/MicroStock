@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
+import com.microstock.apistock.domain.exception.ErrorException;
+import com.microstock.apistock.domain.exception.ErrorExceptionParam;
 import com.microstock.apistock.domain.util.ConstantsDomain;
 
 @ControllerAdvice
@@ -41,7 +42,14 @@ public class ControlAdvice {
                  errors.toString() 
         );
     
-        // Devolver el objeto ExceptionResponse en la respuesta
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ErrorExceptionParam.class)
+    public ResponseEntity<?> resourceNotFoundException(ErrorExceptionParam ex, WebRequest request) {
+        ExceptionResponse errorDetails = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 }
