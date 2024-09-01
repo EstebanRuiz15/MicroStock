@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
+import com.microstock.apistock.domain.exception.ErrorException;
 import com.microstock.apistock.domain.interfaces.ICategoryRepositoryPort;
 import com.microstock.apistock.domain.model.Category;
 import com.microstock.apistock.domain.services.ServiceCategoryImpl;

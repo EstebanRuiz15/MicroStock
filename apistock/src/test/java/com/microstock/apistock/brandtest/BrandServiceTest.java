@@ -1,6 +1,6 @@
 package com.microstock.apistock.brandtest;
 
-import com.microstock.apistock.domain.exception.excepciones_categoria.ErrorException;
+import com.microstock.apistock.domain.exception.ErrorException;
 import com.microstock.apistock.domain.interfaces.IBrandRepositoryPort;
 import com.microstock.apistock.domain.model.Brand;
 import com.microstock.apistock.domain.services.ServiceBrandImpl;

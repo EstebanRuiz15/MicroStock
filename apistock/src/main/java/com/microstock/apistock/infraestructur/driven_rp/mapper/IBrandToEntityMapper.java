@@ -10,4 +10,5 @@ import com.microstock.apistock.infraestructur.driven_rp.entity.BrandEntity;
 public interface IBrandToEntityMapper {
     BrandEntity toBrandEntity(Brand brand);
     Brand toBrand (BrandEntity brandEntity);
+    
 }

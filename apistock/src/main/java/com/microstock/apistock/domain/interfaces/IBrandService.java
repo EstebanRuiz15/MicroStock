@@ -11,5 +11,6 @@ public interface IBrandService {
     void createBrand(Brand brand);
     PaginBrand getAllBrand(Integer page, Integer size, String orden);
     Optional<BrandEntity> findById(Integer id);
+    
 
 }
