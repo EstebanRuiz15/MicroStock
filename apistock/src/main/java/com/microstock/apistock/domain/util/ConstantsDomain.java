@@ -37,4 +37,5 @@ public final class  ConstantsDomain {
     public static final String CATEGORY="category";
     public static final String NO_DATA_ARTICLE_EXCEPTION_MESSAGE="No article data";
     public static final String NO_ARTICLES_FOUND_EXCEPTION_MESSAGE="NO articles were found for this page";
+    public static final String NO_ARTICLE_FOUND="Article not found";
 }

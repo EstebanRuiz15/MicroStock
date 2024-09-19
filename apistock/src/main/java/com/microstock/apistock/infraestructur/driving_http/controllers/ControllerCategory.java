@@ -2,6 +2,7 @@ package com.microstock.apistock.infraestructur.driving_http.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +49,7 @@ public class ControllerCategory {
                                                           "    - `description`:Cannot be null.")
     })
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<Void> crearCategoria(@RequestBody CategoryDtoAdd category) {
         try {

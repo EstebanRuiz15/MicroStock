@@ -9,4 +9,6 @@ public interface IArticleRepositoryPort {
     void saveArticle(Article article);
     Optional<Article> findByNombreIgnoreCase(String name);
     List<Article> finByArticle();
+    Optional<Article> findById(Integer id);
+    String saveUpdate(Article article);
 }

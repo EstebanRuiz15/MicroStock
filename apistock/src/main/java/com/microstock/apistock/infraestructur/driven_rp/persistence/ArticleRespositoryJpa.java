@@ -9,4 +9,6 @@ import com.microstock.apistock.infraestructur.driven_rp.entity.ArticleEntity;
 @Repository
 public interface ArticleRespositoryJpa extends JpaRepository<ArticleEntity,Integer> {
      Optional<ArticleEntity> findByNameIgnoreCase(String name);
+     @SuppressWarnings("null")
+     Optional<ArticleEntity> findById(Integer id);
 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 public class Article {
 
-    private final Integer id;
-    private final String name;
-    private final String description;
-    private final Double price;
-    private final Integer quantity;
-    private final Brand brand;
-    private final List <Category> categories;
+    private  Integer id;
+    private  String name;
+    private  String description;
+    private  Double price;
+    private  Integer quantity;
+    private  Brand brand;
+    private  List <Category> categories;
     public Article(Integer id, String name, String description, Double price, Integer quantity, Brand brand,
             List<Category> categories) {
         this.id = id;
@@ -41,6 +41,27 @@ public class Article {
     }
     public List<Category> getCategories() {
         return categories;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
     
     
