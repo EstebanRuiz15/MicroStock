@@ -3,19 +3,22 @@ package com.microstock.apistock.domain.services;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import java.util.Map;
+
 import com.microstock.apistock.domain.exception.ErrorException;
 import com.microstock.apistock.domain.exception.ErrorExceptionParam;
 import com.microstock.apistock.domain.exception.ErrorNotFoudArticle;
 import com.microstock.apistock.domain.interfaces.IArticleRepositoryPort;
 import com.microstock.apistock.domain.interfaces.IArticleService;
 import com.microstock.apistock.domain.model.Article;
+import com.microstock.apistock.domain.model.Category;
 import com.microstock.apistock.domain.util.ConstantsDomain;
 import com.microstock.apistock.domain.util.PaginArticle;
 import com.microstock.apistock.domain.util.article.ArticleDto;
 import com.microstock.apistock.domain.util.article.CategoryDto;
-
 import java.util.Comparator;
 import java.util.List;
+import java.util.HashMap;
 
 public class ServiceArticleImpl implements IArticleService {
 
@@ -121,6 +124,36 @@ public class ServiceArticleImpl implements IArticleService {
         Article article = repository.findById(idArticle).get();
         article.setQuantity(article.getQuantity() - quantity);
         repository.saveArticle(article);
+    }
+
+    @Override
+    public boolean validItemExist( Integer idArticle){
+        return repository.findById(idArticle).isPresent();
+    };
+
+    @Override
+    public Integer validQuantityItems( Integer idArticle){
+       return repository.findById(idArticle).get().getQuantity();
+    };
+
+    @Override 
+    public boolean validCategories(List<Integer> listId){
+        Map<Long, Integer> categoryCount = new HashMap<>();
+        List<Article> articles=repository.findAllById(listId);
+        for (Article article : articles) {
+            for (Category category : article.getCategories()) {
+                Long categoryId=category.getId();
+                categoryCount.put(categoryId, categoryCount.getOrDefault(categoryId, 0) + 1);
+            }
+        }
+        
+        for (Integer count : categoryCount.values()) {
+            if (count > 2) {
+                return false; 
+            }
+        }
+
+        return true;
     }
 
     private static List<ArticleDto> mapToDtoList(List<Article> articles, String sortBy, String ascending) {

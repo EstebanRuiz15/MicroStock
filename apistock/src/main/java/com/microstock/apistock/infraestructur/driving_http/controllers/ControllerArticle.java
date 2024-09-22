@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import java.util.List;
 
 @RestController
 @RequestMapping("/article")
@@ -104,12 +105,21 @@ public class ControllerArticle {
         return ResponseEntity.ok(articleService.incrementArticles(idArticle, quantity));
     }
 
-    @PreAuthorize("hasRole('AUX_BODEGA')")
-    @PatchMapping("/rollback")
-    public ResponseEntity<Void> rollback(@Valid @RequestParam Integer idArticle,
-            @RequestParam Integer quantity) {
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/exist")
+    public ResponseEntity<Boolean> validItemExist(@RequestParam Integer idArticle){
+        return ResponseEntity.ok(articleService.validItemExist(idArticle));
+    };
 
-        articleService.rollbackArticles(idArticle, quantity);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/quantityValid")
+    public ResponseEntity<Integer> validQuantityItems(@RequestParam Integer idArticle){
+        return ResponseEntity.ok(articleService.validQuantityItems(idArticle));                    
+     };
+
+     @PreAuthorize("hasRole('CLIENT')")
+     @GetMapping("/categoriesValid")
+    public ResponseEntity<Boolean> validCategories(@RequestParam List<Integer> listId){
+        return ResponseEntity.ok(articleService.validCategories(listId));
+    };
 }

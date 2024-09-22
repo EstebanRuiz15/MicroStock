@@ -54,6 +54,11 @@ public class ArticleRepositoryImpl implements IArticleRepositoryPort{
      return ConstantsInfraestructure.UPDATE;
     }
 
+    @Override 
+    public List<Article> findAllById(List<Integer> ids){
+      return mapper.toListArticle(respositoryJpa.findAllById(ids));
+    }
+
 }
     
 

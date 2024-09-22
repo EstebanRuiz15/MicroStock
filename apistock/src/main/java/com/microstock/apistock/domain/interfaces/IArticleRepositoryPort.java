@@ -11,4 +11,5 @@ public interface IArticleRepositoryPort {
     List<Article> finByArticle();
     Optional<Article> findById(Integer id);
     String saveUpdate(Article article);
+    List<Article> findAllById(List<Integer> ids);
 }
