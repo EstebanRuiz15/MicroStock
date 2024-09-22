@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
     
 @SpringBootTest   
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class ControllerCategoryTest {
      @Autowired
     private MockMvc mockMvc;

@@ -34,7 +34,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 @SpringBootTest   
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class ControllerBrandTest {
     private MockMvc mockMvc;
 

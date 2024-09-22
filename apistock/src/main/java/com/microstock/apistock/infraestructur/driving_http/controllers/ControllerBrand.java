@@ -2,6 +2,7 @@ package com.microstock.apistock.infraestructur.driving_http.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,7 @@ public class ControllerBrand {
                                                           "    - 'description': Cannot be loger than 120 characters")
     })
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<Void> addProduct(@RequestBody BrandDtoAdd request) {
        try {

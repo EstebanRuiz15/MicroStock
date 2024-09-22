@@ -1,12 +1,16 @@
 package com.microstock.apistock.infraestructur.driven_rp.adapter;
 
 import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.microstock.apistock.domain.interfaces.IArticleRepositoryPort;
 import com.microstock.apistock.domain.model.Article;
 import com.microstock.apistock.infraestructur.driven_rp.mapper.IArticleToEntityMapper;
 import com.microstock.apistock.infraestructur.driven_rp.persistence.ArticleRespositoryJpa;
+import com.microstock.apistock.infraestructur.util.ConstantsInfraestructure;
+
 import java.util.List;
 
 
@@ -34,6 +38,25 @@ public class ArticleRepositoryImpl implements IArticleRepositoryPort{
     public List<Article> finByArticle() { 
             
         return mapper.toListArticle(respositoryJpa.findAll());
+    }
+
+
+    @Override
+    public Optional<Article> findById(Integer id) {
+      
+      return mapper.toArticle(respositoryJpa.findById(id));
+    }
+
+
+    @Override
+    public String saveUpdate(Article article) {
+     respositoryJpa.save(mapper.toArticleEntity(article));
+     return ConstantsInfraestructure.UPDATE;
+    }
+
+    @Override 
+    public List<Article> findAllById(List<Integer> ids){
+      return mapper.toListArticle(respositoryJpa.findAllById(ids));
     }
 
 }
