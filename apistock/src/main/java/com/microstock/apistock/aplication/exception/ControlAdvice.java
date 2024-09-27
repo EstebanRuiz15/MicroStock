@@ -16,8 +16,6 @@ import com.microstock.apistock.domain.exception.ErrorExceptionParam;
 import com.microstock.apistock.domain.exception.ErrorNotFoudArticle;
 import com.microstock.apistock.domain.util.ConstantsDomain;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-
 @ControllerAdvice
 public class ControlAdvice {
 

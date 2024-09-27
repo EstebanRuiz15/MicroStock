@@ -22,7 +22,6 @@ public class CategoryEntity {
 
     @Column(name = "descripcion", nullable = false)
     private String description;
-
     public CategoryEntity(){
 
     }

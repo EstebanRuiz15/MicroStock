@@ -143,12 +143,12 @@ public class ServiceArticleImpl implements IArticleService {
         for (Article article : articles) {
             for (Category category : article.getCategories()) {
                 Long categoryId=category.getId();
-                categoryCount.put(categoryId, categoryCount.getOrDefault(categoryId, 0) + 1);
+                categoryCount.put(categoryId, categoryCount.getOrDefault(categoryId, ConstantsDomain.ZERO) + ConstantsDomain.ONE);
             }
         }
         
         for (Integer count : categoryCount.values()) {
-            if (count > 2) {
+            if (count > ConstantsDomain.TWO) {
                 return false; 
             }
         }
@@ -156,18 +156,23 @@ public class ServiceArticleImpl implements IArticleService {
         return true;
     }
 
+    @Override
+    public List<Article> getAllArticlesById(List<Integer> ids){
+        return repository.findAllById(ids);
+    }
+
     private static List<ArticleDto> mapToDtoList(List<Article> articles, String sortBy, String ascending) {
         Comparator<ArticleDto> comparator;
 
         switch (sortBy) {
-            case "brand":
+            case ConstantsDomain.BRAND:
                 comparator = Comparator.comparing(ArticleDto::getbrandName, String.CASE_INSENSITIVE_ORDER);
                 break;
-            case "category":
+            case ConstantsDomain.CATEGORY:
                 comparator = Comparator.comparing(article -> article.getCategories().get(0).getName(),
                         String.CASE_INSENSITIVE_ORDER);
                 break;
-            case "article":
+            case ConstantsDomain.ARTICLE:
             default:
                 comparator = Comparator.comparing(ArticleDto::getName, String.CASE_INSENSITIVE_ORDER);
                 break;

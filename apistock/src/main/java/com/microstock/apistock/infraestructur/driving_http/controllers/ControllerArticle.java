@@ -19,6 +19,8 @@ import com.microstock.apistock.domain.util.PaginArticle;
 import com.microstock.apistock.infraestructur.driven_rp.mapper.IBrandToEntityMapper;
 import com.microstock.apistock.infraestructur.driven_rp.mapper.ICategoriaToEntitymapper;
 import com.microstock.apistock.infraestructur.driving_http.dtos.request.ArticleDtoAdd;
+import com.microstock.apistock.infraestructur.driving_http.dtos.response.ArticleResponseItem;
+import com.microstock.apistock.infraestructur.driving_http.mappers.ArticleITemMapper;
 import com.microstock.apistock.infraestructur.driving_http.mappers.IArticleRequestAddMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +41,7 @@ public class ControllerArticle {
     private final IBrandService serviceBrand;
     private final ICategoriaToEntitymapper mapperCategory;
     private final IBrandToEntityMapper mapperBrand;
+    private final ArticleITemMapper mapperItem;
 
     @Operation(summary = "Method for creating artile", description = "This method allows you to create a new article by providing the necessary data in the body of the request.\n\n"
             + //
@@ -122,4 +125,10 @@ public class ControllerArticle {
     public ResponseEntity<Boolean> validCategories(@RequestParam List<Integer> listId){
         return ResponseEntity.ok(articleService.validCategories(listId));
     };
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/getArticlesToId")
+    public ResponseEntity<List<ArticleResponseItem>> getArticlesByIds(@RequestParam List<Integer> ids){
+        return ResponseEntity.ok(mapperItem.toDtoList(articleService.getAllArticlesById(ids)));
+    }
 }

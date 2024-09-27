@@ -13,14 +13,14 @@ import com.microstock.apistock.infraestructur.driven_rp.entity.ArticleEntity;
 public interface  IArticleToEntityMapper { 
    ArticleEntity toArticleEntity(Article article);
    default Optional<Article> toArticle(Optional<ArticleEntity> articleEntity) {
-       return articleEntity.map(this::toArticle); // Convierte si está presente
+       return articleEntity.map(this::toArticle); 
    }
 
    Article toArticle(ArticleEntity articleEntity);
 
    default List<Article> toListArticle(List<ArticleEntity> articleEntities) {
        return articleEntities == null || articleEntities.isEmpty()
-           ? Collections.emptyList() // Devuelve una lista vacía si es null o está vacía
+           ? Collections.emptyList() 
            : articleEntities.stream()
                             .map(this::toArticle)
                             .collect(Collectors.toList());
