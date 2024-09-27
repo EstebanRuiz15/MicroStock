@@ -11,6 +11,11 @@ public class Article {
     private  Integer quantity;
     private  Brand brand;
     private  List <Category> categories;
+
+    public Article(){
+        
+    }
+
     public Article(Integer id, String name, String description, Double price, Integer quantity, Brand brand,
             List<Category> categories) {
         this.id = id;

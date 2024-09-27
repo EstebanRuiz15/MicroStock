@@ -16,7 +16,6 @@ public interface CategoriaRepositoryJpa extends JpaRepository<CategoryEntity, In
     Optional<Category> findByNameIgnoreCase(String name);
     @SuppressWarnings("null")
     List<CategoryEntity> findAll(Sort sort);
-    @SuppressWarnings("null")
-    Optional<CategoryEntity> findById(Integer id);
+    Optional<CategoryEntity> findById(Long id);
 
 }

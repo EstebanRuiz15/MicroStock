@@ -12,4 +12,5 @@ public interface IArticleService {
     boolean validItemExist(Integer idArticle);
     Integer validQuantityItems( Integer idArticle);
     boolean validCategories(@RequestParam List<Integer> listId);
+    List<Article> getAllArticlesById(List<Integer> ids);
 }
