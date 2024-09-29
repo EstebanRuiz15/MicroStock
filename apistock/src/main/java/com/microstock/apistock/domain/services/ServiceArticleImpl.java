@@ -12,6 +12,7 @@ import com.microstock.apistock.domain.interfaces.IArticleRepositoryPort;
 import com.microstock.apistock.domain.interfaces.IArticleService;
 import com.microstock.apistock.domain.model.Article;
 import com.microstock.apistock.domain.model.Category;
+import com.microstock.apistock.domain.model.Item;
 import com.microstock.apistock.domain.util.ConstantsDomain;
 import com.microstock.apistock.domain.util.PaginArticle;
 import com.microstock.apistock.domain.util.article.ArticleDto;
@@ -127,29 +128,30 @@ public class ServiceArticleImpl implements IArticleService {
     }
 
     @Override
-    public boolean validItemExist( Integer idArticle){
+    public boolean validItemExist(Integer idArticle) {
         return repository.findById(idArticle).isPresent();
     };
 
     @Override
-    public Integer validQuantityItems( Integer idArticle){
-       return repository.findById(idArticle).get().getQuantity();
+    public Integer validQuantityItems(Integer idArticle) {
+        return repository.findById(idArticle).get().getQuantity();
     };
 
-    @Override 
-    public boolean validCategories(List<Integer> listId){
+    @Override
+    public boolean validCategories(List<Integer> listId) {
         Map<Long, Integer> categoryCount = new HashMap<>();
-        List<Article> articles=repository.findAllById(listId);
+        List<Article> articles = repository.findAllById(listId);
         for (Article article : articles) {
             for (Category category : article.getCategories()) {
-                Long categoryId=category.getId();
-                categoryCount.put(categoryId, categoryCount.getOrDefault(categoryId, ConstantsDomain.ZERO) + ConstantsDomain.ONE);
+                Long categoryId = category.getId();
+                categoryCount.put(categoryId,
+                        categoryCount.getOrDefault(categoryId, ConstantsDomain.ZERO) + ConstantsDomain.ONE);
             }
         }
-        
+
         for (Integer count : categoryCount.values()) {
             if (count > ConstantsDomain.TWO) {
-                return false; 
+                return false;
             }
         }
 
@@ -157,8 +159,31 @@ public class ServiceArticleImpl implements IArticleService {
     }
 
     @Override
-    public List<Article> getAllArticlesById(List<Integer> ids){
+    public List<Article> getAllArticlesById(List<Integer> ids) {
         return repository.findAllById(ids);
+    }
+
+    @Override
+    public List<Article> reserveItems(List<Item> items) {
+        List<Integer> itemsIds = items.stream()
+                .map(Item::getProductId)
+                .collect(Collectors.toList());
+        for (Item item : items) {
+            Article article = repository.findById(item.getProductId())
+                    .orElseThrow(() -> new ErrorNotFoudArticle(ConstantsDomain.NO_ARTICLES_FOUND_EXCEPTION_MESSAGE + item.getProductId()));
+
+            if (item.getQuantity() > article.getQuantity()) {
+                throw new ErrorException(ConstantsDomain.QUANTITY_INSIFICENT + item.getProductId()
+                        + ConstantsDomain.STOCK_AVAILABLE + article.getQuantity());
+            }
+
+            article.setQuantity(article.getQuantity() - item.getQuantity());
+
+            repository.saveArticle(article);
+        }
+       
+    return repository.findAllById(itemsIds);
+
     }
 
     private static List<ArticleDto> mapToDtoList(List<Article> articles, String sortBy, String ascending) {
