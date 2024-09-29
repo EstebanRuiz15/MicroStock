@@ -15,13 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.microstock.apistock.domain.interfaces.IArticleService;
 import com.microstock.apistock.domain.interfaces.IBrandService;
 import com.microstock.apistock.domain.interfaces.ICategoryService;
+import com.microstock.apistock.domain.model.Article;
 import com.microstock.apistock.domain.util.PaginArticle;
 import com.microstock.apistock.infraestructur.driven_rp.mapper.IBrandToEntityMapper;
 import com.microstock.apistock.infraestructur.driven_rp.mapper.ICategoriaToEntitymapper;
 import com.microstock.apistock.infraestructur.driving_http.dtos.request.ArticleDtoAdd;
+import com.microstock.apistock.infraestructur.driving_http.dtos.request.ItemsDto;
 import com.microstock.apistock.infraestructur.driving_http.dtos.response.ArticleResponseItem;
+import com.microstock.apistock.infraestructur.driving_http.dtos.response.ArticlesTransaccion;
 import com.microstock.apistock.infraestructur.driving_http.mappers.ArticleITemMapper;
 import com.microstock.apistock.infraestructur.driving_http.mappers.IArticleRequestAddMapper;
+import com.microstock.apistock.infraestructur.driving_http.mappers.IArticleTransaccionMapper;
+import com.microstock.apistock.infraestructur.driving_http.mappers.IMapperItems;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -42,6 +47,8 @@ public class ControllerArticle {
     private final ICategoriaToEntitymapper mapperCategory;
     private final IBrandToEntityMapper mapperBrand;
     private final ArticleITemMapper mapperItem;
+    private final IArticleTransaccionMapper transaccionMapper;
+    private final IMapperItems maperItemList;
 
     @Operation(summary = "Method for creating artile", description = "This method allows you to create a new article by providing the necessary data in the body of the request.\n\n"
             + //
@@ -130,5 +137,12 @@ public class ControllerArticle {
     @GetMapping("/getArticlesToId")
     public ResponseEntity<List<ArticleResponseItem>> getArticlesByIds(@RequestParam List<Integer> ids){
         return ResponseEntity.ok(mapperItem.toDtoList(articleService.getAllArticlesById(ids)));
+    }
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/reserve")
+    public ResponseEntity<List<ArticlesTransaccion>> reserveItems(@RequestBody List<ItemsDto> lisItems){
+       List<Article> art= articleService.reserveItems(maperItemList.toItemList(lisItems));
+        return ResponseEntity.ok(transaccionMapper.toArticlesTransaccionList(art));
     }
 }

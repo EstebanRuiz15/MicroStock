@@ -39,4 +39,6 @@ public final class  ConstantsDomain {
     public static final String NO_ARTICLES_FOUND_EXCEPTION_MESSAGE="NO articles were found for this page";
     public static final String NO_ARTICLE_FOUND="Article not found";
     public static final Integer TWO=2;
+    public static final String QUANTITY_INSIFICENT="Insufficient quantity in stock for item with id: ";
+    public static final String STOCK_AVAILABLE=". Stock available: ";
 }
